@@ -1,12 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useChainId, useSwitchChain, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useAccount,
+  useChainId,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { sepolia } from 'wagmi/chains'
 import { toast } from 'sonner'
 import { fhelAbi } from '@/lib/fhel-abi'
 import { getFhelAddress } from '@/lib/contract'
-import { useAccount } from 'wagmi'
 
 export default function LiquidatePage() {
   const { isConnected } = useAccount()

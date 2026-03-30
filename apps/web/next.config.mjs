@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  transpilePackages: ['@rainbow-me/rainbowkit', '@cofhe/sdk'],
+}
 
-export default nextConfig;
+export default nextConfig
