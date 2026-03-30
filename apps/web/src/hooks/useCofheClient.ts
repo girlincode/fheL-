@@ -33,13 +33,16 @@ export function useCofheClient() {
       try {
         setError(null)
         const config = await createCofheConfig({
-          environment: 'TESTNET',
+          environment: 'web',
           supportedChains: [cofheSepolia],
         })
         const c = createCofheClient(config)
         active = c
         const adapted = await WagmiAdapter(walletClient, publicClient)
-        await c.connect(adapted.publicClient, adapted.walletClient)
+        await c.connect(
+          adapted.publicClient as Parameters<typeof c.connect>[0],
+          adapted.walletClient as Parameters<typeof c.connect>[1]
+        )
         await c.permits.getOrCreateSelfPermit()
         if (cancelled) {
           c.disconnect()

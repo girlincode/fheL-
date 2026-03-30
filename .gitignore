@@ -4,6 +4,7 @@ node_modules
 .env*.local
 contracts/.env
 apps/web/.env.local
+apps/web/.env
 .next
 out
 cache

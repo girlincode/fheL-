@@ -1,6 +1,6 @@
 import { loadFixture } from '@nomicfoundation/hardhat-toolbox/network-helpers'
 import hre from 'hardhat'
-import { Encryptable, FheTypes } from '@cofhe/sdk'
+import { Encryptable } from '@cofhe/sdk'
 
 describe('FheL', function () {
   async function deployFixture() {

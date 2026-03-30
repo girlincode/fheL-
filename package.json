@@ -1,0 +1,11 @@
+{
+  "name": "fhel",
+  "private": true,
+  "scripts": {
+    "contracts:compile": "cd contracts && npx hardhat compile",
+    "contracts:test": "cd contracts && npx hardhat test",
+    "contracts:deploy:sepolia": "cd contracts && npx hardhat run scripts/deploy.ts --network eth-sepolia",
+    "web:dev": "cd apps/web && npm run dev",
+    "web:build": "cd apps/web && npm run build"
+  }
+}
