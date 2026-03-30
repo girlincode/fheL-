@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@rainbow-me/rainbowkit', '@cofhe/sdk'],
+  transpilePackages: ['@cofhe/sdk'],
 }
 
 export default nextConfig

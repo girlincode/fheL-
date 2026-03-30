@@ -1,10 +1,11 @@
-import { getDefaultConfig } from '@rainbow-me/rainbowkit'
+import { createConfig, http } from 'wagmi'
 import { sepolia } from 'wagmi/chains'
+import { injected } from 'wagmi/connectors'
 
-export const wagmiConfig = getDefaultConfig({
-  appName: 'fheL — Private Liquidation Engine',
-  projectId:
-    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '00000000000000000000000000000000',
+export const wagmiConfig = createConfig({
   chains: [sepolia],
-  ssr: true,
+  connectors: [injected()],
+  transports: {
+    [sepolia.id]: http(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL),
+  },
 })

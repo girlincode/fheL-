@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ConnectWalletButton } from '@/components/connect-wallet'
 
 export function SiteNav() {
   return (
@@ -24,7 +24,7 @@ export function SiteNav() {
           >
             Liquidate
           </Link>
-          <ConnectButton showBalance={false} chainStatus="icon" />
+          <ConnectWalletButton />
         </nav>
       </div>
     </header>
