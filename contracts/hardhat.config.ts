@@ -44,6 +44,9 @@ const config: HardhatUserConfig = {
     cache: './cache',
     artifacts: './artifacts',
   },
+  cofhe: {
+    gasWarning: false,
+  },
 }
 
 export default config
