@@ -108,6 +108,8 @@ See [`.env.example`](.env.example) at the repo root. Typical entries:
 - **No oracle** — Amounts are abstract **uint64 units**; there is no USD/ETH price feed in this MVP.
 - **CoFHE** — Real FHE on Sepolia depends on Fhenix CoFHE availability; local tests use **mocks** via the Hardhat plugin.
 
+
+https://fhel.vercel.app
 ## Glossary
 
 | Term | Meaning |
