@@ -3,25 +3,52 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --fhe-base: #0b1020;
+  --fhe-cyan: #22d3ee;
+  --fhe-violet: #a78bfa;
+  --fhe-muted: rgba(255, 255, 255, 0.65);
+  --fhe-border: rgba(34, 211, 238, 0.2);
+  --background: var(--fhe-base);
+  --foreground: #f8fafc;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(34, 211, 238, 0.12), transparent),
+    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(167, 139, 250, 0.08), transparent);
+  min-height: 100vh;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Sliding gradient on brand text "fheL" */
+.fhel-slide {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    var(--fhe-cyan) 0%,
+    var(--fhe-violet) 40%,
+    var(--fhe-cyan) 80%,
+    var(--fhe-violet) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fhel-gradient-slide 4s linear infinite;
+}
+
+@keyframes fhel-gradient-slide {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
   }
 }

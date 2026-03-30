@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 import { WagmiAdapter } from '@cofhe/sdk/adapters'
 import { createCofheClient, createCofheConfig } from '@cofhe/sdk/web'
@@ -14,25 +14,20 @@ export function useCofheClient() {
   const [client, setClient] = useState<CofheClient | null>(null)
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const initRef = useRef(false)
-
-  const disconnectCofhe = useCallback(() => {
-    initRef.current = false
-    setReady(false)
-    setClient((c) => {
-      c?.disconnect()
-      return null
-    })
-  }, [])
 
   useEffect(() => {
     if (!isConnected || !address || !publicClient || !walletClient) {
-      disconnectCofhe()
+      setClient((c) => {
+        c?.disconnect()
+        return null
+      })
+      setReady(false)
       setError(null)
       return
     }
 
     let cancelled = false
+    let active: CofheClient | null = null
 
     ;(async () => {
       try {
@@ -42,6 +37,7 @@ export function useCofheClient() {
           supportedChains: [cofheSepolia],
         })
         const c = createCofheClient(config)
+        active = c
         const adapted = await WagmiAdapter(walletClient, publicClient)
         await c.connect(adapted.publicClient, adapted.walletClient)
         await c.permits.getOrCreateSelfPermit()
@@ -51,18 +47,19 @@ export function useCofheClient() {
         }
         setClient(c)
         setReady(true)
-        initRef.current = true
       } catch (e) {
         console.error(e)
         setError(e instanceof Error ? e.message : 'CoFHE init failed')
         setReady(false)
+        setClient(null)
       }
     })()
 
     return () => {
       cancelled = true
+      active?.disconnect()
     }
-  }, [isConnected, address, publicClient, walletClient, disconnectCofhe])
+  }, [isConnected, address, publicClient, walletClient])
 
   return { cofheClient: client, cofheReady: ready, cofheError: error }
 }
