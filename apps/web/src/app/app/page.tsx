@@ -138,6 +138,28 @@ export default function AppPage() {
           Deposit and borrow use encrypted uint64 inputs. Max borrow {`≤`} 80% of collateral; liquidation if debt
           {` > `}75% of collateral (both in encrypted arithmetic).
         </p>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--fhe-muted)]">
+          Use the same number scale for every action (e.g. if you deposit <code className="rounded bg-black/30 px-1 text-xs">100</code>, borrow
+          stays comparable in those units). After each successful tx, your on-chain handles update — use{' '}
+          <strong className="font-medium text-white/85">Decrypt</strong> to see cleartext only on your machine.
+        </p>
+      </div>
+
+      <div className="mb-8 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-xl border border-[var(--fhe-border)] bg-[var(--fhe-cyan)]/[0.06] p-4 text-xs leading-relaxed text-[var(--fhe-muted)]">
+          <span className="font-semibold text-[var(--fhe-cyan)]">Quick tip</span>
+          <p className="mt-2">
+            Approve wallet prompts for CoFHE permits the first time you encrypt or decrypt — that links your keys to
+            the coprocessor securely.
+          </p>
+        </div>
+        <div className="rounded-xl border border-[var(--fhe-border)] bg-[var(--fhe-violet)]/[0.06] p-4 text-xs leading-relaxed text-[var(--fhe-muted)]">
+          <span className="font-semibold text-[var(--fhe-violet)]">Borrow didn’t change?</span>
+          <p className="mt-2">
+            The contract only updates debt when the encrypted LTV check passes. Lower the borrow or add collateral, then
+            try again.
+          </p>
+        </div>
       </div>
 
       <div className="mb-8">

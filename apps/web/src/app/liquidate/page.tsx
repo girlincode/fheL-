@@ -57,6 +57,25 @@ export default function LiquidatePage() {
         clears a position when encrypted debt is above the liquidation threshold (75% of collateral in this MVP).
         You never see their balances — only whether your transaction changes state on-chain.
       </p>
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--fhe-muted)]">
+        Paste a borrower’s <code className="rounded bg-black/30 px-1 text-[0.7rem]">0x</code> address from the Sepolia deployment. If the position is not liquidatable, the tx may
+        still succeed while leaving their encrypted state unchanged — that is expected FHE policy enforcement, not a bug.
+      </p>
+
+      <ul className="mt-6 space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-xs text-[var(--fhe-muted)]">
+        <li className="flex gap-2">
+          <span className="text-[var(--fhe-cyan)]">1.</span>
+          <span>Connect on Sepolia and ensure the contract address is configured in env.</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="text-[var(--fhe-cyan)]">2.</span>
+          <span>Use an address that has an open position (e.g. a friend’s wallet or a second account you control).</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="text-[var(--fhe-cyan)]">3.</span>
+          <span>Check Etherscan for the tx: look for state changes on the FheL contract, not plaintext logs.</span>
+        </li>
+      </ul>
 
       <div className="my-8">
         <ContractStatus />

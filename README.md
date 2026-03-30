@@ -108,6 +108,43 @@ See [`.env.example`](.env.example) at the repo root. Typical entries:
 - **No oracle** — Amounts are abstract **uint64 units**; there is no USD/ETH price feed in this MVP.
 - **CoFHE** — Real FHE on Sepolia depends on Fhenix CoFHE availability; local tests use **mocks** via the Hardhat plugin.
 
+## Glossary
+
+| Term | Meaning |
+|------|--------|
+| **CoFHE** | Fhenix’s coprocessor for fully homomorphic encryption on Ethereum — evaluates FHE ops off-chain with on-chain verification. |
+| **euint64** | An encrypted 64-bit unsigned integer handle stored on-chain; the cleartext is not visible in contract storage. |
+| **Permit** | A CoFHE authorization that lets your wallet decrypt specific ciphertext handles you are allowed to see. |
+| **BPS** | Basis points (1% = 100 BPS). Policy constants like 8000 BPS = 80%. |
+| **Liquidation (here)** | Clearing a position when **encrypted** debt exceeds **75%** of **encrypted** collateral under the contract’s rules. |
+
+## FAQ
+
+**Why Sepolia only?**  
+CoFHE and this UI are wired for Ethereum Sepolia testnet (chain ID `11155111`). Other networks need contract redeploy and config changes.
+
+**Do I need real ETH?**  
+No — use **Sepolia test ETH** from a faucet. Never use mainnet keys or funds for this demo.
+
+**Why might “Borrow” not increase my debt?**  
+If the encrypted check fails (e.g. requested debt would exceed the max LTV), the contract keeps your previous debt. Try a smaller borrow or deposit more first.
+
+**Why does liquidation “do nothing”?**  
+`liquidate(user)` only changes state when the **FHE condition** for liquidatable is true. If the position is healthy in encrypted terms, the call is a no-op from your perspective (gas still applies).
+
+**Encrypt/decrypt feels slow**  
+First use may fetch proving keys; ZK steps can take several seconds. Retry on a stable connection; see [CoFHE docs](https://cofhe-docs.fhenix.zone/) for environment notes.
+
+## Troubleshooting
+
+| Symptom | What to try |
+|--------|-------------|
+| Wallet on wrong network | Switch to **Sepolia** in the wallet; use the in-app “Switch to Sepolia” when shown. |
+| `NEXT_PUBLIC_FHEL_CONTRACT_ADDRESS` missing | Deploy `FheL.sol`, copy the address into `apps/web/.env.local`, restart `npm run dev`. |
+| Transactions revert | Check you have enough Sepolia ETH; confirm the contract address matches your deployment. |
+| Decrypt fails | Ensure CoFHE initialized (no error banner); connect the **same** account that owns the position; approve permits if the wallet prompts. |
+| `npm install` peer warnings | This repo pins viem 2.x with wagmi; if you change versions, align wagmi, viem, and TanStack Query per wagmi docs. |
+
 ## References
 
 - [CoFHE documentation](https://cofhe-docs.fhenix.zone/)
