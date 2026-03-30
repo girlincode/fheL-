@@ -12,6 +12,7 @@ import { sepolia } from 'wagmi/chains'
 import { toast } from 'sonner'
 import { fhelAbi } from '@/lib/fhel-abi'
 import { getFhelAddress } from '@/lib/contract'
+import { ContractStatus } from '@/components/contract-status'
 
 export default function LiquidatePage() {
   const { isConnected } = useAccount()
@@ -47,13 +48,19 @@ export default function LiquidatePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-2xl font-bold text-[var(--fhe-cyan)]">Liquidate</h1>
-      <p className="mt-2 text-sm text-[var(--fhe-muted)]">
-        Calls <code className="rounded bg-black/30 px-1">liquidate(user)</code>. The contract only clears a position
-        when encrypted debt is above the liquidation threshold (75% of collateral in this MVP). You never see
-        their balances — only whether your transaction changes state on-chain.
+    <div className="mx-auto max-w-2xl px-4 py-10 md:py-14">
+      <h1 className="bg-gradient-to-r from-[var(--fhe-cyan)] to-[var(--fhe-violet)] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+        Liquidate
+      </h1>
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--fhe-muted)]">
+        Calls <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">liquidate(user)</code>. The contract only
+        clears a position when encrypted debt is above the liquidation threshold (75% of collateral in this MVP).
+        You never see their balances — only whether your transaction changes state on-chain.
       </p>
+
+      <div className="my-8">
+        <ContractStatus />
+      </div>
 
       {!contractAddress && (
         <div className="mt-6 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
@@ -71,10 +78,12 @@ export default function LiquidatePage() {
         </button>
       )}
 
-      <div className="mt-8 rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/50 p-6">
-        <label className="text-xs uppercase text-[var(--fhe-muted)]">Borrower address</label>
+      <div className="rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/40 p-6 shadow-xl shadow-black/20 backdrop-blur-sm">
+        <label className="text-xs font-medium uppercase tracking-wide text-[var(--fhe-muted)]">
+          Borrower address
+        </label>
         <input
-          className="mt-1 w-full rounded border border-[var(--fhe-border)] bg-black/30 px-3 py-2 font-mono text-sm"
+          className="mt-2 w-full rounded-lg border border-[var(--fhe-border)] bg-black/40 px-3 py-2.5 font-mono text-sm text-white"
           placeholder="0x…"
           value={target}
           onChange={(e) => setTarget(e.target.value.trim())}

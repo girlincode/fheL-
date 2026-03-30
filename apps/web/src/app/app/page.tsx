@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   useAccount,
   useChainId,
@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { useCofheClient } from '@/hooks/useCofheClient'
 import { fhelAbi } from '@/lib/fhel-abi'
 import { getFhelAddress } from '@/lib/contract'
+import { ContractStatus } from '@/components/contract-status'
 
 export default function AppPage() {
   const { address, isConnected } = useAccount()
@@ -28,7 +29,7 @@ export default function AppPage() {
 
   const contractAddress = getFhelAddress()
 
-  const { data: position } = useReadContract({
+  const { data: position, refetch: refetchPosition } = useReadContract({
     address: contractAddress ?? undefined,
     abi: fhelAbi,
     functionName: 'positionOf',
@@ -38,6 +39,10 @@ export default function AppPage() {
       enabled: Boolean(isConnected && address && contractAddress && chainId === sepolia.id),
     },
   })
+
+  useEffect(() => {
+    if (isConfirmed) void refetchPosition()
+  }, [isConfirmed, refetchPosition])
 
   const [depositAmt, setDepositAmt] = useState('100')
   const [borrowAmt, setBorrowAmt] = useState('50')
@@ -124,12 +129,20 @@ export default function AppPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-2xl font-bold text-[var(--fhe-cyan)]">Dashboard</h1>
-      <p className="mt-2 text-sm text-[var(--fhe-muted)]">
-        Deposit and borrow use encrypted uint64 inputs. Max borrow {`≤`} 80% of collateral; liquidation if debt
-        {` > `}75% of collateral (both in encrypted arithmetic).
-      </p>
+    <div className="mx-auto max-w-2xl px-4 py-10 md:py-14">
+      <div className="mb-8">
+        <h1 className="bg-gradient-to-r from-[var(--fhe-cyan)] to-[var(--fhe-violet)] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+          Dashboard
+        </h1>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--fhe-muted)]">
+          Deposit and borrow use encrypted uint64 inputs. Max borrow {`≤`} 80% of collateral; liquidation if debt
+          {` > `}75% of collateral (both in encrypted arithmetic).
+        </p>
+      </div>
+
+      <div className="mb-8">
+        <ContractStatus />
+      </div>
 
       {!contractAddress && (
         <div className="mt-6 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
@@ -156,11 +169,13 @@ export default function AppPage() {
         <p className="mt-4 text-sm text-[var(--fhe-muted)]">Initializing CoFHE client…</p>
       )}
 
-      <div className="mt-8 space-y-6 rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/50 p-6">
+      <div className="mt-2 space-y-6 rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/40 p-6 shadow-xl shadow-black/20 backdrop-blur-sm">
         <div>
-          <label className="text-xs uppercase text-[var(--fhe-muted)]">Deposit amount (uint64 units)</label>
+          <label className="text-xs font-medium uppercase tracking-wide text-[var(--fhe-muted)]">
+            Deposit amount (uint64 units)
+          </label>
           <input
-            className="mt-1 w-full rounded border border-[var(--fhe-border)] bg-black/30 px-3 py-2 text-sm"
+            className="mt-2 w-full rounded-lg border border-[var(--fhe-border)] bg-black/40 px-3 py-2.5 text-sm text-white placeholder:text-white/30"
             value={depositAmt}
             onChange={(e) => setDepositAmt(e.target.value)}
           />
@@ -174,9 +189,11 @@ export default function AppPage() {
           </button>
         </div>
         <div>
-          <label className="text-xs uppercase text-[var(--fhe-muted)]">Borrow amount</label>
+          <label className="text-xs font-medium uppercase tracking-wide text-[var(--fhe-muted)]">
+            Borrow amount
+          </label>
           <input
-            className="mt-1 w-full rounded border border-[var(--fhe-border)] bg-black/30 px-3 py-2 text-sm"
+            className="mt-2 w-full rounded-lg border border-[var(--fhe-border)] bg-black/40 px-3 py-2.5 text-sm text-white placeholder:text-white/30"
             value={borrowAmt}
             onChange={(e) => setBorrowAmt(e.target.value)}
           />
@@ -191,7 +208,7 @@ export default function AppPage() {
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/50 p-6">
+      <div className="mt-8 rounded-2xl border border-[var(--fhe-border)] bg-[var(--fhe-base)]/40 p-6 shadow-xl shadow-black/20 backdrop-blur-sm">
         <h2 className="text-lg font-semibold text-[var(--fhe-violet)]">Your position (decrypt)</h2>
         <p className="mt-1 text-xs text-[var(--fhe-muted)]">
           Uses your active CoFHE permit to seal/unseal handles from <code>positionOf</code>.

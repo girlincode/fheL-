@@ -2,15 +2,15 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-16 md:py-28">
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-[var(--fhe-cyan)]">
           Fhenix CoFHE · Ethereum Sepolia
         </p>
-        <h1 className="fhel-slide text-4xl font-bold tracking-tight md:text-6xl">
+        <h1 className="fhel-slide text-4xl font-bold leading-[1.1] tracking-tight md:text-6xl">
           Private liquidations. Encrypted risk.
         </h1>
-        <p className="mt-6 text-lg text-[var(--fhe-muted)]">
+        <p className="mt-6 text-lg leading-relaxed text-[var(--fhe-muted)] md:text-xl">
           fheL is a testnet demo of a private liquidation engine: collateral and debt stay encrypted on-chain,
           health checks run in FHE, and liquidations execute without broadcasting your position size to the world.
         </p>

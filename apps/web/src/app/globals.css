@@ -16,9 +16,16 @@ body {
   color: var(--foreground);
   background: var(--background);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(34, 211, 238, 0.12), transparent),
-    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(167, 139, 250, 0.08), transparent);
+    linear-gradient(rgba(11, 16, 32, 0.92), rgba(11, 16, 32, 0.92)),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2322d3ee' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(34, 211, 238, 0.14), transparent),
+    radial-gradient(ellipse 80% 50% at 100% 40%, rgba(167, 139, 250, 0.09), transparent);
   min-height: 100vh;
+}
+
+input:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.45);
+  outline-offset: 2px;
 }
 
 @layer utilities {
@@ -27,7 +34,7 @@ body {
   }
 }
 
-/* Sliding gradient on brand text "fheL" */
+/* Brand: sliding gradient on "fheL" */
 .fhel-slide {
   display: inline-block;
   background: linear-gradient(
@@ -50,5 +57,123 @@ body {
   }
   100% {
     background-position: 200% center;
+  }
+}
+
+/* Ambient hero orbs */
+.fhe-orb {
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.45;
+  animation: fhe-float 18s ease-in-out infinite;
+}
+
+.fhe-orb-delay {
+  animation-delay: -6s;
+}
+
+@keyframes fhe-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(12px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-16px, 12px) scale(0.95);
+  }
+}
+
+/* Staggered fade-in on load */
+.fhe-fade-in {
+  animation: fhe-fade-in 0.85s ease-out both;
+}
+
+.fhe-delay-1 {
+  animation-delay: 0.1s;
+}
+.fhe-delay-2 {
+  animation-delay: 0.2s;
+}
+.fhe-delay-3 {
+  animation-delay: 0.35s;
+}
+.fhe-delay-4 {
+  animation-delay: 0.5s;
+}
+.fhe-delay-5 {
+  animation-delay: 0.65s;
+}
+
+@keyframes fhe-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Interactive cards */
+.fhe-card-interactive {
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.fhe-card-interactive:hover {
+  transform: translateY(-3px);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 20px 40px -20px rgba(34, 211, 238, 0.12);
+}
+
+/* Shimmer line under headings */
+.fhe-shimmer-line {
+  height: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--fhe-cyan),
+    var(--fhe-violet),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: fhe-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes fhe-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* FAQ native details */
+.fhe-details summary {
+  cursor: pointer;
+  list-style: none;
+}
+.fhe-details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fhel-slide,
+  .fhe-orb,
+  .fhe-orb-delay,
+  .fhe-fade-in,
+  .fhe-shimmer-line {
+    animation: none !important;
+  }
+  .fhe-card-interactive:hover {
+    transform: none;
   }
 }

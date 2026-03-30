@@ -69,6 +69,16 @@ Optional: verify on Etherscan if `ETHERSCAN_API_KEY` is set in `contracts/.env`.
 | `LIQUIDATION_BPS`   | 7500  | Liquidatable if debt > 75% of collateral     |
 | `BPS`               | 10000 | Denominator                                  |
 
+## Deployed contract (Sepolia)
+
+Latest deployment used in development:
+
+- **FheL:** `0xAC7FFf28FA5Fbeef187BfFe6344119E92Adc57bF` ([Etherscan](https://sepolia.etherscan.io/address/0xAC7FFf28FA5Fbeef187BfFe6344119E92Adc57bF))
+
+Set `NEXT_PUBLIC_FHEL_CONTRACT_ADDRESS` in `apps/web/.env.local` to this address (or your own after redeploying).
+
+**Security:** Never commit `PRIVATE_KEY` or API keys. If a key was shared in chat or logs, **rotate it** and fund a new deployer.
+
 ## Web app
 
 ```bash
